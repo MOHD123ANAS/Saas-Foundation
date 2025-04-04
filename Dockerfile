@@ -4,7 +4,7 @@ ARG PYTHON_VERSION=3.12-slim-bullseye
 FROM python:${PYTHON_VERSION}
 
 # Create a virtual environment
-RUN python -m venv /opt/venv
+
 
 # Set the virtual environment as the current location
 ENV PATH=/opt/venv/bin:$PATH
@@ -47,6 +47,8 @@ RUN pip install -r /tmp/requirments.txt
 # run any other commands that do not need the database
 # such as:
 # RUN python manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput
+RUN python manage.py vendor_pull
 
 # set the Django default project name
 ARG PROJ_NAME="cfehome"
