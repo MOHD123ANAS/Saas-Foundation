@@ -12,10 +12,23 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from email.policy import default
 from pathlib import Path
 from decouple import config
-from django.conf.global_settings import STATICFILES_DIRS, STATIC_ROOT
+from django.conf.global_settings import STATICFILES_DIRS, STATIC_ROOT, MANAGERS
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Email Config
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config("EMAIL_HOST", cast=str, default=None)
+EMAIL_PORT = config("EMAIL_PORT", cast=str, default='587') # Recommended
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", cast=str, default=None)
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", cast=str, default=None)
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool, default=True)  # Use EMAIL_PORT 587 for TLS
+EMAIL_USE_SSL = config("EMAIL_USE_SSL", cast=bool, default=False)  # EUse MAIL_PORT 465 for SSL
+
+ADMINS=[('Anas','mohammedanas18025@gmail.com'),]
+MANAGERS=ADMINS
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -28,6 +41,7 @@ SECRET_KEY = config("DJANGO_SECRET_KEY")
 # DEBUG = str(os.environ.get("DJANGO DEBUG")).lower() == "true"
 DEBUG = config("DJANGO_DEBUG")
 
+ALLAUTH_UI_THEME = "light"
 
 ALLOWED_HOSTS = [".railway.app" # https://saas.prod.railway.app
                  ]
@@ -46,18 +60,38 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+
     # my-apps
     "visits",
-    "commando"
+    "commando",
+    "profiles",
+    "subscriptions",
+    "customers",
+
+
+    #Third part app
+    'allauth_ui',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
+    'widget_tweaks',
+    'slippers',
+
+
+
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    "allauth.account.middleware.AccountMiddleware",
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -122,6 +156,33 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Django allauth config
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "[CFE]"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+
+
+
+AUTHENTICATION_BACKENDS = [
+
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+
+]
+
+SOCIALACCOUNT_PROVIDERS = {
+    "github":{
+        "VERIFIED_EMAIL": True
+    }
+}
+
+
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -155,7 +216,12 @@ STATICFILES_DIRS=[
 # output for python manage.py collectionstatic
 # local cdn
 STATIC_ROOT = BASE_DIR /"local-cdn"
+STORAGES = {
 
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
