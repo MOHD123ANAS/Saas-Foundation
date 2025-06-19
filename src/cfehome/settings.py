@@ -40,6 +40,7 @@ SECRET_KEY = config("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = str(os.environ.get("DJANGO DEBUG")).lower() == "true"
 DEBUG = config("DJANGO_DEBUG")
+BASE_URL = config("BASE_URL",default=None)
 
 ALLAUTH_UI_THEME = "light"
 

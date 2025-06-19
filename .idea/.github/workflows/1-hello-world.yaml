@@ -1,0 +1,13 @@
+name: 1- Hello world github actions
+
+on:
+  push: #git push
+  branch:
+    - main
+
+jobs:
+  helo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello there
+        run: echo "hello"
