@@ -2,12 +2,12 @@ name: 1- Hello world github actions
 
 on:
   workflow_dispatch:
-  push: #git push
-  branches:
-    - main
+  push:
+    branches:
+      - main
 
 jobs:
-  helo:
+  hello:
     runs-on: ubuntu-latest
     steps:
       - name: Hello there
