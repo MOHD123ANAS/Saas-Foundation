@@ -10,4 +10,3 @@ django-allauth-ui==1.5.3
 django-widget-tweaks
 slippers
 stripe
-python3-saml
