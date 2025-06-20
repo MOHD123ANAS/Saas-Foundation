@@ -2,9 +2,9 @@ name: 5 -neon-db-branch-django-tests
 
 on:
   workflow_dispatch:
-#  push:
-#    branches:
-#      - main
+  push:
+    branches:
+      - main
 
 jobs:
   test:
@@ -55,3 +55,7 @@ jobs:
         working-directory: ./src
         run: |
          python manage.py test --keepdb
+      - name: Clean UP Step
+        continue-on-error: true
+        run: |
+          neonctl branches delete "${{env.NEON_GITHUB_BRANCH}}" --project-id "${{env.NEON_PROJECT_ID}}"
