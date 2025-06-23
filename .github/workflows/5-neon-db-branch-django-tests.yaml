@@ -1,10 +1,10 @@
 name: 5 -neon-db-branch-django-tests
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
+#  workflow_dispatch:
+#  push:
+#    branches:
+#      - main
 
 jobs:
   test:

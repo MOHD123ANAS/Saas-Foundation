@@ -1,7 +1,7 @@
 name: 1- Test Django Basic
 
 on:
-  workflow_dispatch:
+#  workflow_dispatch:
 
   push:
     branches:
