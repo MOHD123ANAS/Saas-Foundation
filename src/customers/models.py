@@ -33,10 +33,11 @@ class Customer(models.Model):
 
 def allauth_user_signed_up_handler(request, user,*args,**kwargs):
     email = user.email
+    is_social_signup = user.socialaccount_set.exists()
     Customer.objects.create(
         user=user,
         init_email=email,
-        init_email_confirmed=False,
+        init_email_confirmed=is_social_signup,
     )
 
 allauth_user_signed_up.connect(allauth_user_signed_up_handler)

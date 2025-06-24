@@ -9,6 +9,8 @@ from django.contrib.auth import get_user_model
 from django.http import HttpResponseBadRequest
 
 
+
+
 BASE_URL = settings.BASE_URL
 User = get_user_model()
 # Create your views here.
@@ -95,3 +97,4 @@ def checkout_finalize_view(request):
 
     context = {}
     return render(request,"checkout/success.html",context)
+
